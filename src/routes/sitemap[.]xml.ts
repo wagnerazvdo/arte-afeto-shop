@@ -20,7 +20,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           supabase.from("products").select("slug, updated_at").eq("ativo", true),
         ]);
 
-        const entries = [
+        const entries: Array<{ path: string; lastmod?: string; changefreq?: string; priority?: string }> = [
           { path: "/", changefreq: "weekly", priority: "1.0" },
           { path: "/colecao", changefreq: "weekly", priority: "0.9" },
           { path: "/sobre", changefreq: "monthly", priority: "0.6" },
