@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
+  Link,
   createRootRouteWithContext,
   useRouter,
   HeadContent,
@@ -9,26 +10,24 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import logo from "@/assets/logo.asset.json";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="font-display text-7xl text-primary">404</h1>
-        <h2 className="mt-4 font-display text-2xl text-foreground">Página não encontrada</h2>
+        <h1 className="text-7xl font-bold text-foreground">404</h1>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          O caminho que você buscou não existe ou foi movido.
+          The page you're looking for doesn't exist or has been moved.
         </p>
         <div className="mt-6">
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90 transition"
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Voltar ao início
-          </a>
+            Go home
+          </Link>
         </div>
       </div>
     </div>
@@ -45,19 +44,27 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="font-display text-2xl text-foreground">Algo deu errado</h1>
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+          This page didn't load
+        </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Tente novamente em alguns instantes.
+          Something went wrong on our end. You can try refreshing or head back home.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
-            onClick={() => { router.invalidate(); reset(); }}
-            className="rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground"
+            onClick={() => {
+              router.invalidate();
+              reset();
+            }}
+            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Tentar novamente
+            Try again
           </button>
-          <a href="/" className="rounded-full border border-input bg-background px-6 py-2.5 text-sm">
-            Início
+          <a
+            href="/"
+            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          >
+            Go home
           </a>
         </div>
       </div>
@@ -70,24 +77,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Ateliê Arte e Afeto — Peças artesanais feitas com amor" },
-      { name: "description", content: "Peças artesanais, cerâmicas e decoração feitas à mão com propósito, fé e afeto." },
-      { name: "author", content: "Ateliê Arte e Afeto" },
-      { property: "og:title", content: "Ateliê Arte e Afeto" },
-      { property: "og:description", content: "Peças artesanais feitas à mão com amor, propósito e significado." },
+      { title: "ARTE E AFETO" },
+      { name: "description", content: "O Ateliê Arte e Afeto nasceu da união entre a delicadeza do artesanal e o valor das histórias que cada peça pode carregar." },
+      { name: "author", content: "Lovable" },
+      { property: "og:title", content: "ARTE E AFETO" },
+      { property: "og:description", content: "O Ateliê Arte e Afeto nasceu da união entre a delicadeza do artesanal e o valor das histórias que cada peça pode carregar." },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "Ateliê Arte e Afeto" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "ARTE E AFETO" },
+      { name: "twitter:description", content: "O Ateliê Arte e Afeto nasceu da união entre a delicadeza do artesanal e o valor das histórias que cada peça pode carregar." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/1014ac00-70c9-4285-8e6b-367ba72d1410" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/1014ac00-70c9-4285-8e6b-367ba72d1410" },
     ],
     links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: logo.url, type: "image/jpeg" },
-      { rel: "apple-touch-icon", href: logo.url },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap",
+        href: appCss,
       },
     ],
   }),
@@ -99,7 +105,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR">
+    <html lang="en">
       <head>
         <HeadContent />
       </head>
@@ -113,10 +119,11 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
   return (
     <QueryClientProvider client={queryClient}>
+      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
-      <Toaster richColors position="top-center" />
     </QueryClientProvider>
   );
 }
