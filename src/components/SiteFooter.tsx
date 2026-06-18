@@ -68,5 +68,7 @@ export function SiteFooter() {
         </div>
       </div>
     </footer>
+    </>
   );
 }
+
