@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Instagram, MessageCircle, Mail, ShoppingBag, ExternalLink } from "lucide-react";
 import { fetchSiteSettings } from "@/lib/queries";
