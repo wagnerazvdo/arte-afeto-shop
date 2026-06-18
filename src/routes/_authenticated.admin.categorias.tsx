@@ -38,6 +38,7 @@ function CategoriasPage() {
   const update = async (id: string, patch: any) => {
     const { error } = await supabase.from("categories").update(patch).eq("id", id);
     if (error) return toast.error(error.message);
+    toast.success("Categoria atualizada");
     refetch();
     qc.invalidateQueries({ queryKey: ["categories", "active"] });
   };
@@ -46,6 +47,7 @@ function CategoriasPage() {
     if (!confirm("Excluir categoria?")) return;
     const { error } = await supabase.from("categories").delete().eq("id", id);
     if (error) return toast.error(error.message);
+    toast.success("Categoria excluída");
     refetch();
   };
 
