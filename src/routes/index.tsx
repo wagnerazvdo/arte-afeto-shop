@@ -47,8 +47,8 @@ function HomePage() {
             <span className="inline-flex items-center gap-2 text-xs tracking-[0.3em] uppercase text-accent">
               <Heart className="h-3 w-3 fill-accent" /> Ateliê artesanal
             </span>
-            <h1 className="mt-5 font-display text-5xl md:text-6xl lg:text-7xl leading-[1.05] text-balance text-foreground">
-              Arte e Afeto
+            <h1 className="mt-5 font-display font-light italic text-5xl md:text-6xl lg:text-7xl leading-[1.05] text-balance text-foreground tracking-wide">
+              Arte <span className="text-accent">&amp;</span> Afeto
             </h1>
             <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-lg text-pretty leading-relaxed">
               Peças feitas à mão com amor, propósito e significado.
