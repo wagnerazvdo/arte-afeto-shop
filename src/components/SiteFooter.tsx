@@ -2,12 +2,15 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Instagram, Mail, MapPin, MessageCircle, Heart } from "lucide-react";
 import { Logo } from "./Logo";
+import { FloatingWhatsApp } from "./FloatingWhatsApp";
 import { fetchSiteSettings } from "@/lib/queries";
 
 export function SiteFooter() {
   const { data: settings } = useQuery({ queryKey: ["site_settings"], queryFn: fetchSiteSettings });
 
   return (
+    <>
+    <FloatingWhatsApp />
     <footer className="mt-24 border-t border-border/60 bg-muted/40">
       <div className="container-wide py-14 grid gap-10 md:grid-cols-3">
         <div>
@@ -65,5 +68,7 @@ export function SiteFooter() {
         </div>
       </div>
     </footer>
+    </>
   );
 }
+

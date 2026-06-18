@@ -163,6 +163,9 @@ export type Database = {
           endereco: string | null
           id: string
           instagram: string | null
+          links_lista: Json
+          links_subtitulo: string | null
+          links_titulo: string | null
           logo_url: string | null
           meta_description: string | null
           meta_title: string | null
@@ -177,6 +180,9 @@ export type Database = {
           endereco?: string | null
           id?: string
           instagram?: string | null
+          links_lista?: Json
+          links_subtitulo?: string | null
+          links_titulo?: string | null
           logo_url?: string | null
           meta_description?: string | null
           meta_title?: string | null
@@ -191,6 +197,9 @@ export type Database = {
           endereco?: string | null
           id?: string
           instagram?: string | null
+          links_lista?: Json
+          links_subtitulo?: string | null
+          links_titulo?: string | null
           logo_url?: string | null
           meta_description?: string | null
           meta_title?: string | null
