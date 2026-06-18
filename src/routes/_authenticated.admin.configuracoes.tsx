@@ -34,10 +34,13 @@ function SettingsPage() {
       banner_url: form.banner_url,
       meta_title: form.meta_title,
       meta_description: form.meta_description,
+      links_titulo: form.links_titulo,
+      links_subtitulo: form.links_subtitulo,
+      links_lista: (form.links_lista ?? []).filter((l: any) => l?.label && l?.url),
     }).eq("id", data!.id);
     setLoading(false);
     if (error) return toast.error(error.message);
-    toast.success("Configurações salvas");
+    toast.success("Configurações salvas com sucesso!");
     refetch();
   };
 
