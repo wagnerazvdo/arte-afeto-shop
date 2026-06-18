@@ -93,15 +93,15 @@ function LinksPage() {
               </li>
             ) : (
               <li key={it.label}>
-                <Link
-                  to={it.href}
+                <a
+                  href={it.href}
                   className="group flex items-center justify-between gap-3 rounded-full border border-accent/30 bg-card px-6 py-4 text-foreground hover:bg-secondary/70 hover:border-accent transition shadow-sm"
                 >
                   <span className="flex items-center gap-3 text-sm font-medium">
                     <span className="text-accent">{it.icon}</span>
                     {it.label}
                   </span>
-                </Link>
+                </a>
               </li>
             ),
           )}
