@@ -31,6 +31,8 @@ export type ProductImage = {
   principal: boolean;
 };
 
+export type LinkItem = { label: string; url: string };
+
 export type SiteSettings = {
   id: string;
   whatsapp: string | null;
@@ -42,6 +44,9 @@ export type SiteSettings = {
   banner_url: string | null;
   meta_title: string | null;
   meta_description: string | null;
+  links_titulo: string | null;
+  links_subtitulo: string | null;
+  links_lista: LinkItem[];
 };
 
 export async function fetchActiveCategories() {
