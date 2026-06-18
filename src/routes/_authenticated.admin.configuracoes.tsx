@@ -98,8 +98,61 @@ function SettingsPage() {
           <Textarea rows={2} value={form.meta_description ?? ""} onChange={(e) => setForm({ ...form, meta_description: e.target.value })} />
         </Field>
 
+        <div className="mt-8 pt-6 border-t border-border">
+          <h2 className="font-display text-2xl">Página /links (Linktree)</h2>
+          <p className="text-sm text-muted-foreground">Personalize a página pública de links rápidos.</p>
+        </div>
+        <Field label="Título da página /links">
+          <Input value={form.links_titulo ?? ""} onChange={(e) => setForm({ ...form, links_titulo: e.target.value })} />
+        </Field>
+        <Field label="Subtítulo da página /links">
+          <Textarea rows={2} value={form.links_subtitulo ?? ""} onChange={(e) => setForm({ ...form, links_subtitulo: e.target.value })} />
+        </Field>
+
+        <div>
+          <Label className="mb-2 block text-sm">Links extras (além de Fale conosco, Catálogo, Instagram e e-mail)</Label>
+          <div className="space-y-2">
+            {(form.links_lista ?? []).map((l: any, i: number) => (
+              <div key={i} className="flex gap-2">
+                <Input
+                  placeholder="Rótulo (ex.: Pinterest)"
+                  value={l.label}
+                  onChange={(e) => {
+                    const next = [...(form.links_lista ?? [])];
+                    next[i] = { ...next[i], label: e.target.value };
+                    setForm({ ...form, links_lista: next });
+                  }}
+                />
+                <Input
+                  placeholder="URL (https://...)"
+                  value={l.url}
+                  onChange={(e) => {
+                    const next = [...(form.links_lista ?? [])];
+                    next[i] = { ...next[i], url: e.target.value };
+                    setForm({ ...form, links_lista: next });
+                  }}
+                />
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => {
+                    const next = (form.links_lista ?? []).filter((_: any, j: number) => j !== i);
+                    setForm({ ...form, links_lista: next });
+                  }}
+                >Remover</Button>
+              </div>
+            ))}
+            <Button
+              variant="outline"
+              type="button"
+              className="rounded-full"
+              onClick={() => setForm({ ...form, links_lista: [...(form.links_lista ?? []), { label: "", url: "" }] })}
+            >+ Adicionar link</Button>
+          </div>
+        </div>
+
         <div className="pt-4">
-          <Button onClick={save} disabled={loading} className="rounded-full px-8">{loading ? "Salvando..." : "Salvar"}</Button>
+          <Button onClick={save} disabled={loading} className="rounded-full px-8">{loading ? "Salvando..." : "Salvar alterações"}</Button>
         </div>
       </div>
     </div>
