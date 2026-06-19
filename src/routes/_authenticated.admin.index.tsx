@@ -28,7 +28,7 @@ function Dashboard() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-10">
-      <h1 className="font-display text-4xl">Olá!</h1>
+      <h1 className="font-display text-3xl sm:text-4xl">Olá!</h1>
       <p className="mt-1 text-muted-foreground">Visão geral do ateliê.</p>
 
       <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -68,7 +68,7 @@ function Card({ icon: Icon, label, value }: any) {
     <div className="rounded-2xl border border-border bg-card p-6">
       <Icon className="h-5 w-5 text-accent" />
       <p className="mt-3 text-sm text-muted-foreground">{label}</p>
-      <p className="mt-1 font-display text-4xl">{value}</p>
+      <p className="mt-1 font-display text-3xl sm:text-4xl">{value}</p>
     </div>
   );
 }
