@@ -53,11 +53,11 @@ function SettingsPage() {
     toast.success("Arquivo enviado. Salve para aplicar.");
   };
 
-  if (!data) return <div className="p-10">Carregando...</div>;
+  if (!data) return <div className="p-6">Carregando...</div>;
 
   return (
-    <div className="p-8 lg:p-10 max-w-3xl">
-      <h1 className="font-display text-4xl">Configurações</h1>
+    <div className="p-4 sm:p-6 lg:p-10 max-w-3xl">
+      <h1 className="font-display text-3xl sm:text-4xl">Configurações</h1>
       <p className="text-muted-foreground text-sm">Dados do ateliê, contato e SEO</p>
 
       <div className="mt-8 grid gap-5">

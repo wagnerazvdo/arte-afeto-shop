@@ -52,16 +52,16 @@ function CategoriasPage() {
   };
 
   return (
-    <div className="p-8 lg:p-10 max-w-3xl">
-      <h1 className="font-display text-4xl">Categorias</h1>
+    <div className="p-4 sm:p-6 lg:p-10 max-w-3xl">
+      <h1 className="font-display text-3xl sm:text-4xl">Categorias</h1>
       <p className="text-muted-foreground text-sm">Gerencie as categorias do menu</p>
 
-      <div className="mt-6 rounded-2xl border border-border bg-card p-5 flex gap-3 items-end">
-        <div className="flex-1">
+      <div className="mt-6 rounded-2xl border border-border bg-card p-5 flex flex-col sm:flex-row gap-3 sm:items-end">
+        <div className="flex-1 min-w-0">
           <label className="text-xs text-muted-foreground">Nova categoria</label>
           <Input value={novo.nome} onChange={(e) => setNovo({ ...novo, nome: e.target.value })} placeholder="Nome" />
         </div>
-        <div className="w-24">
+        <div className="sm:w-24">
           <label className="text-xs text-muted-foreground">Ordem</label>
           <Input type="number" value={novo.ordem} onChange={(e) => setNovo({ ...novo, ordem: Number(e.target.value) })} />
         </div>
@@ -70,9 +70,9 @@ function CategoriasPage() {
 
       <div className="mt-6 space-y-2">
         {categories.map((c: any) => (
-          <div key={c.id} className="rounded-xl border border-border bg-card p-4 flex items-center gap-3">
-            <Input className="max-w-xs" defaultValue={c.nome} onBlur={(e) => e.target.value !== c.nome && update(c.id, { nome: e.target.value, slug: slugify(e.target.value) })} />
-            <span className="text-xs text-muted-foreground flex-1">/{c.slug}</span>
+          <div key={c.id} className="rounded-xl border border-border bg-card p-4 flex flex-wrap items-center gap-3">
+            <Input className="flex-1 min-w-[160px] sm:max-w-xs" defaultValue={c.nome} onBlur={(e) => e.target.value !== c.nome && update(c.id, { nome: e.target.value, slug: slugify(e.target.value) })} />
+            <span className="text-xs text-muted-foreground flex-1 min-w-0 truncate hidden sm:inline">/{c.slug}</span>
             <Input type="number" className="w-20" defaultValue={c.ordem} onBlur={(e) => Number(e.target.value) !== c.ordem && update(c.id, { ordem: Number(e.target.value) })} />
             <Switch checked={c.ativa} onCheckedChange={(v) => update(c.id, { ativa: v })} />
             <Button size="icon" variant="ghost" onClick={() => remove(c.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
