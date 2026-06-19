@@ -159,7 +159,7 @@ function HomePage() {
       {recentes.length > 0 && (
         <section className="container-wide py-12">
           <h2 className="font-display text-3xl mb-6">Recém chegadas</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {recentes.map((p) => (
               <ProductCard
                 key={p.id}
