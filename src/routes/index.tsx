@@ -86,9 +86,9 @@ function HomePage() {
           </h2>
         </div>
         <div className="lg:col-span-3">
-          <p className="text-lg leading-relaxed text-foreground/80">
+          <p className="text-lg leading-relaxed text-foreground/80 whitespace-pre-line">
             {settings?.texto_institucional ??
-              "Mais do que objetos decorativos, cada criação é desenvolvida com intenção, cuidado e significado, transformando a arte em uma forma de expressar sentimentos, memórias e afeto."}
+              "O Ateliê Arte e Afeto nasceu da união entre a delicadeza do artesanal e o valor das histórias que cada peça pode carregar.\nMais do que objetos decorativos, cada criação é desenvolvida com intenção, cuidado e significado, transformando a arte em uma forma de expressar sentimentos, memórias e afeto.\nInspirada no processo da cerâmica e na beleza das transformações, acredito que cada detalhe possui um propósito."}
           </p>
           <ul className="mt-8 grid sm:grid-cols-2 gap-4">
             {[
