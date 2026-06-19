@@ -27,7 +27,7 @@ function Dashboard() {
   });
 
   return (
-    <div className="p-8 lg:p-10">
+    <div className="p-4 sm:p-6 lg:p-10">
       <h1 className="font-display text-4xl">Olá!</h1>
       <p className="mt-1 text-muted-foreground">Visão geral do ateliê.</p>
 

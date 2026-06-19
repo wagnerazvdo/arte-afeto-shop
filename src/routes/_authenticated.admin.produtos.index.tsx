@@ -52,7 +52,7 @@ function ProdutosListPage() {
   };
 
   return (
-    <div className="p-8 lg:p-10">
+    <div className="p-4 sm:p-6 lg:p-10">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="font-display text-4xl">Produtos</h1>

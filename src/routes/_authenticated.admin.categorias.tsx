@@ -52,7 +52,7 @@ function CategoriasPage() {
   };
 
   return (
-    <div className="p-8 lg:p-10 max-w-3xl">
+    <div className="p-4 sm:p-6 lg:p-10 max-w-3xl">
       <h1 className="font-display text-4xl">Categorias</h1>
       <p className="text-muted-foreground text-sm">Gerencie as categorias do menu</p>
 

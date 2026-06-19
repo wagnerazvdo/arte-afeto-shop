@@ -148,7 +148,7 @@ export function ProdutoForm({ id, onCreated }: Props) {
   };
 
   return (
-    <div className="p-8 lg:p-10 max-w-4xl">
+    <div className="p-4 sm:p-6 lg:p-10 max-w-4xl">
       <Link to="/admin/produtos" className="inline-flex items-center text-sm text-muted-foreground hover:text-primary"><ArrowLeft className="h-4 w-4 mr-1" /> Voltar</Link>
       <h1 className="font-display text-4xl mt-3">{isNew ? "Novo produto" : "Editar produto"}</h1>
 
