@@ -1,9 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { Instagram, MessageCircle, Mail, ShoppingBag, ExternalLink } from "lucide-react";
+import { Logo } from "@/components/Logo";
 import { fetchSiteSettings } from "@/lib/queries";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
-import { Logo } from "@/components/Logo";
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import { ExternalLink, Instagram, Mail, MessageCircle, ShoppingBag } from "lucide-react";
 
 export const Route = createFileRoute("/links")({
   head: () => ({
@@ -65,7 +65,7 @@ function LinksPage() {
     <div className="min-h-screen bg-gradient-to-b from-secondary/40 via-background to-background flex flex-col items-center px-5 py-14">
       <div className="w-full max-w-md text-center">
         <div className="mx-auto h-24 w-24 rounded-full bg-card border border-accent/30 overflow-hidden shadow-[0_20px_60px_-20px_oklch(0.52_0.105_45_/_0.4)] flex items-center justify-center">
-          <Logo className="h-16 w-16" />
+          <Logo className="h-24 w-24" />
         </div>
         <h1 className="mt-5 font-display font-light italic text-4xl text-foreground">
           {settings?.links_titulo ?? "Ateliê Arte e Afeto"}

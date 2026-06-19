@@ -1,24 +1,29 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, Heart, Leaf, Sparkles, HandHeart } from "lucide-react";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
-import { ProductCard } from "@/components/ProductCard";
-import { Button } from "@/components/ui/button";
-import {
-  fetchActiveCategories,
-  fetchProductsWithCover,
-  fetchSiteSettings,
-} from "@/lib/queries";
 import logo from "@/assets/logo.asset.json";
+import { ProductCard } from "@/components/ProductCard";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
+import { Button } from "@/components/ui/button";
+import { fetchActiveCategories, fetchProductsWithCover, fetchSiteSettings } from "@/lib/queries";
+import { resolveImageUrl } from "@/lib/storage-url";
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, HandHeart, Heart, Leaf, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Ateliê Arte e Afeto — Peças artesanais com propósito" },
-      { name: "description", content: "Cerâmicas, vasos e peças decorativas feitas à mão com amor, propósito e significado." },
+      {
+        name: "description",
+        content:
+          "Cerâmicas, vasos e peças decorativas feitas à mão com amor, propósito e significado.",
+      },
       { property: "og:title", content: "Ateliê Arte e Afeto" },
-      { property: "og:description", content: "Peças artesanais feitas à mão com amor, propósito e significado." },
+      {
+        property: "og:description",
+        content: "Peças artesanais feitas à mão com amor, propósito e significado.",
+      },
       { property: "og:image", content: logo.url },
       { property: "og:url", content: "/" },
     ],
@@ -29,8 +34,26 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const { data: settings } = useQuery({ queryKey: ["site_settings"], queryFn: fetchSiteSettings });
-  const { data: categories = [] } = useQuery({ queryKey: ["categories", "active"], queryFn: fetchActiveCategories });
-  const { data: products = [] } = useQuery({ queryKey: ["products", "all"], queryFn: fetchProductsWithCover });
+  const { data: categories = [] } = useQuery({
+    queryKey: ["categories", "active"],
+    queryFn: fetchActiveCategories,
+  });
+  const { data: products = [] } = useQuery({
+    queryKey: ["products", "all"],
+    queryFn: fetchProductsWithCover,
+  });
+  const [resolvedLogoUrl, setResolvedLogoUrl] = useState(logo.url);
+
+  useEffect(() => {
+    let active = true;
+    const logoUrl = settings?.logo_url || logo.url;
+    resolveImageUrl(logoUrl).then((url) => {
+      if (active) setResolvedLogoUrl(url);
+    });
+    return () => {
+      active = false;
+    };
+  }, [settings?.logo_url]);
 
   const destaques = products.filter((p) => p.destaque).slice(0, 8);
   const recentes = products.slice(0, 4);
@@ -55,23 +78,40 @@ function HomePage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="rounded-full px-8 h-12">
-                <Link to="/colecao">Conhecer coleção <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                <Link to="/colecao">
+                  Conhecer coleção <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full px-8 h-12 border-accent/40">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="rounded-full px-8 h-12 border-accent/40"
+              >
                 <Link to="/sobre">Nossa história</Link>
               </Button>
             </div>
             <div className="mt-10 flex flex-wrap gap-6 text-xs tracking-widest uppercase text-muted-foreground">
-              <span className="flex items-center gap-2"><Sparkles className="h-3.5 w-3.5 text-accent" /> Exclusivo</span>
-              <span className="flex items-center gap-2"><Leaf className="h-3.5 w-3.5 text-accent" /> Artesanal</span>
-              <span className="flex items-center gap-2"><HandHeart className="h-3.5 w-3.5 text-accent" /> Feito com fé</span>
+              <span className="flex items-center gap-2">
+                <Sparkles className="h-3.5 w-3.5 text-accent" /> Exclusivo
+              </span>
+              <span className="flex items-center gap-2">
+                <Leaf className="h-3.5 w-3.5 text-accent" /> Artesanal
+              </span>
+              <span className="flex items-center gap-2">
+                <HandHeart className="h-3.5 w-3.5 text-accent" /> Feito com fé
+              </span>
             </div>
           </div>
 
           <div className="relative animate-fade-up" style={{ animationDelay: "120ms" }}>
             <div className="absolute -inset-6 rounded-full bg-accent/15 blur-3xl" />
             <div className="relative aspect-square rounded-full overflow-hidden bg-secondary/50 border border-accent/30 shadow-[0_30px_80px_-30px_oklch(0.52_0.105_45_/_0.4)]">
-              <img src={logo.url} alt="Ateliê Arte e Afeto" className="h-full w-full object-cover" />
+              <img
+                src={resolvedLogoUrl}
+                alt="Ateliê Arte e Afeto"
+                className="h-full w-full object-cover"
+              />
             </div>
           </div>
         </div>
@@ -120,7 +160,9 @@ function HomePage() {
                 params={{ slug: c.slug }}
                 className="group rounded-2xl border border-border/60 bg-card p-5 text-center transition hover:bg-secondary/60 hover:border-accent/50"
               >
-                <p className="font-display text-lg text-foreground group-hover:text-primary transition">{c.nome}</p>
+                <p className="font-display text-lg text-foreground group-hover:text-primary transition">
+                  {c.nome}
+                </p>
               </Link>
             ))}
           </div>
@@ -135,7 +177,10 @@ function HomePage() {
               <span className="text-xs tracking-[0.3em] uppercase text-accent">Selecionadas</span>
               <h2 className="mt-2 font-display text-4xl md:text-5xl">Peças em destaque</h2>
             </div>
-            <Link to="/colecao" className="hidden md:inline-flex items-center text-sm text-primary hover:opacity-80">
+            <Link
+              to="/colecao"
+              className="hidden md:inline-flex items-center text-sm text-primary hover:opacity-80"
+            >
               Ver toda a coleção <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </div>
@@ -180,7 +225,8 @@ function HomePage() {
         <div className="rounded-3xl bg-gradient-to-br from-accent/25 via-secondary/50 to-background border border-accent/30 p-10 md:p-16 text-center">
           <Heart className="mx-auto h-7 w-7 fill-accent text-accent" />
           <p className="mt-5 font-display text-3xl md:text-4xl text-balance leading-snug text-foreground max-w-3xl mx-auto">
-            "Cada peça da Arte e Afeto carrega uma história, um propósito e o cuidado de quem acredita que o amor transforma tudo o que toca."
+            "Cada peça da Arte e Afeto carrega uma história, um propósito e o cuidado de quem
+            acredita que o amor transforma tudo o que toca."
           </p>
         </div>
       </section>

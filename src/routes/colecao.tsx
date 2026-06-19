@@ -1,18 +1,22 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { useMemo, useState } from "react";
-import { Search } from "lucide-react";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
 import { ProductCard } from "@/components/ProductCard";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
 import { Input } from "@/components/ui/input";
 import { fetchActiveCategories, fetchProductsWithCover } from "@/lib/queries";
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Search } from "lucide-react";
+import { useMemo, useState } from "react";
 
 export const Route = createFileRoute("/colecao")({
   head: () => ({
     meta: [
       { title: "Coleção — Ateliê Arte e Afeto" },
-      { name: "description", content: "Toda a coleção de peças artesanais Arte e Afeto: vasos, cerâmicas, decoração e personalizados." },
+      {
+        name: "description",
+        content:
+          "Toda a coleção de peças artesanais Arte e Afeto: vasos, cerâmicas, decoração e personalizados.",
+      },
       { property: "og:title", content: "Coleção — Ateliê Arte e Afeto" },
       { property: "og:description", content: "Explore peças únicas feitas à mão." },
       { property: "og:url", content: "/colecao" },
@@ -25,8 +29,14 @@ export const Route = createFileRoute("/colecao")({
 function ColecaoPage() {
   const [search, setSearch] = useState("");
   const [cat, setCat] = useState<string | null>(null);
-  const { data: products = [] } = useQuery({ queryKey: ["products", "all"], queryFn: fetchProductsWithCover });
-  const { data: categories = [] } = useQuery({ queryKey: ["categories", "active"], queryFn: fetchActiveCategories });
+  const { data: products = [] } = useQuery({
+    queryKey: ["products", "all"],
+    queryFn: fetchProductsWithCover,
+  });
+  const { data: categories = [] } = useQuery({
+    queryKey: ["categories", "active"],
+    queryFn: fetchActiveCategories,
+  });
 
   const filtered = useMemo(() => {
     return products.filter((p) => {
@@ -67,7 +77,9 @@ function ColecaoPage() {
             <button
               onClick={() => setCat(null)}
               className={`rounded-full border px-4 py-1.5 text-sm transition ${
-                cat === null ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border hover:border-accent"
+                cat === null
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-card border-border hover:border-accent"
               }`}
             >
               Todas
@@ -77,7 +89,9 @@ function ColecaoPage() {
                 key={c.id}
                 onClick={() => setCat(c.slug)}
                 className={`rounded-full border px-4 py-1.5 text-sm transition ${
-                  cat === c.slug ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border hover:border-accent"
+                  cat === c.slug
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-card border-border hover:border-accent"
                 }`}
               >
                 {c.nome}
@@ -86,7 +100,7 @@ function ColecaoPage() {
           </div>
         </div>
 
-        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {filtered.map((p) => (
             <ProductCard
               key={p.id}
@@ -102,7 +116,16 @@ function ColecaoPage() {
         {filtered.length === 0 && (
           <div className="text-center py-20 text-muted-foreground">
             <p>Nenhuma peça encontrada.</p>
-            <Link to="/colecao" className="text-primary text-sm mt-2 inline-block" onClick={() => { setSearch(""); setCat(null); }}>Limpar filtros</Link>
+            <Link
+              to="/colecao"
+              className="text-primary text-sm mt-2 inline-block"
+              onClick={() => {
+                setSearch("");
+                setCat(null);
+              }}
+            >
+              Limpar filtros
+            </Link>
           </div>
         )}
       </section>
