@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, redirect, Link, useNavigate, useRouterState } 
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/Logo";
-import { LayoutDashboard, Package, Tags, Settings, LogOut, ExternalLink } from "lucide-react";
+import { LayoutDashboard, Package, Tags, Settings, LogOut, ExternalLink, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
