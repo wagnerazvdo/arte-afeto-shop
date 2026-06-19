@@ -27,10 +27,15 @@ function AdminLayout() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [email, setEmail] = useState<string>("");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? ""));
   }, []);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   const logout = async () => {
     await supabase.auth.signOut();
@@ -63,41 +68,80 @@ function AdminLayout() {
     { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
   ];
 
+  const Sidebar = (
+    <>
+      <div className="p-5 border-b border-border flex items-center justify-between">
+        <Logo className="h-10 w-10" showText />
+        <button
+          onClick={() => setOpen(false)}
+          className="lg:hidden p-2 rounded-lg hover:bg-secondary"
+          aria-label="Fechar menu"
+        >
+          <X className="h-5 w-5" />
+        </button>
+      </div>
+      <nav className="p-3 flex-1 space-y-1">
+        {nav.map((n) => {
+          const Icon = n.icon;
+          const active = n.to === "/admin" ? pathname === "/admin" : pathname.startsWith(n.to);
+          return (
+            <Link
+              key={n.to}
+              to={n.to}
+              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
+                active ? "bg-primary text-primary-foreground" : "hover:bg-secondary text-foreground/80"
+              }`}
+            >
+              <Icon className="h-4 w-4" /> {n.label}
+            </Link>
+          );
+        })}
+      </nav>
+      <div className="p-3 border-t border-border space-y-1">
+        <Link to="/" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-secondary">
+          <ExternalLink className="h-4 w-4" /> Ver site
+        </Link>
+        <button onClick={logout} className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-secondary text-muted-foreground">
+          <LogOut className="h-4 w-4" /> Sair
+        </button>
+        <p className="px-3 pt-2 text-[10px] text-muted-foreground truncate">{email}</p>
+      </div>
+    </>
+  );
+
   return (
     <div className="min-h-screen flex bg-muted/30">
-      <aside className="w-64 shrink-0 border-r border-border bg-card flex flex-col">
-        <div className="p-5 border-b border-border">
-          <Logo className="h-10 w-10" showText />
-        </div>
-        <nav className="p-3 flex-1 space-y-1">
-          {nav.map((n) => {
-            const Icon = n.icon;
-            const active = n.to === "/admin" ? pathname === "/admin" : pathname.startsWith(n.to);
-            return (
-              <Link
-                key={n.to}
-                to={n.to}
-                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
-                  active ? "bg-primary text-primary-foreground" : "hover:bg-secondary text-foreground/80"
-                }`}
-              >
-                <Icon className="h-4 w-4" /> {n.label}
-              </Link>
-            );
-          })}
-        </nav>
-        <div className="p-3 border-t border-border space-y-1">
-          <Link to="/" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-secondary">
-            <ExternalLink className="h-4 w-4" /> Ver site
-          </Link>
-          <button onClick={logout} className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm hover:bg-secondary text-muted-foreground">
-            <LogOut className="h-4 w-4" /> Sair
-          </button>
-          <p className="px-3 pt-2 text-[10px] text-muted-foreground truncate">{email}</p>
-        </div>
+      {/* Desktop sidebar */}
+      <aside className="hidden lg:flex w-64 shrink-0 border-r border-border bg-card flex-col">
+        {Sidebar}
       </aside>
-      <main className="flex-1 min-w-0">
-        <Outlet />
+
+      {/* Mobile drawer */}
+      {open && (
+        <div className="lg:hidden fixed inset-0 z-50 flex">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
+          <aside className="relative w-72 max-w-[85vw] bg-card border-r border-border flex flex-col animate-in slide-in-from-left">
+            {Sidebar}
+          </aside>
+        </div>
+      )}
+
+      <main className="flex-1 min-w-0 flex flex-col">
+        {/* Mobile top bar */}
+        <header className="lg:hidden sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-border bg-card/95 backdrop-blur px-4 py-3">
+          <button
+            onClick={() => setOpen(true)}
+            className="p-2 rounded-lg hover:bg-secondary"
+            aria-label="Abrir menu"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+          <Logo className="h-8 w-8" showText />
+          <div className="w-9" />
+        </header>
+        <div className="flex-1 min-w-0">
+          <Outlet />
+        </div>
       </main>
     </div>
   );
