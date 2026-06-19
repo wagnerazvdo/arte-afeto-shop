@@ -53,57 +53,59 @@ function ProdutosListPage() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-10">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="font-display text-4xl">Produtos</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div className="min-w-0">
+          <h1 className="font-display text-3xl sm:text-4xl">Produtos</h1>
           <p className="text-muted-foreground text-sm">Gerencie sua coleção</p>
         </div>
         <Button asChild className="rounded-full"><Link to="/admin/produtos/novo"><Plus className="h-4 w-4 mr-2" /> Novo produto</Link></Button>
       </div>
 
       <div className="rounded-2xl border border-border bg-card overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-secondary/40 text-left text-xs uppercase tracking-wider text-muted-foreground">
-            <tr>
-              <th className="px-4 py-3">Nome</th>
-              <th className="px-4 py-3">Código</th>
-              <th className="px-4 py-3">Categoria</th>
-              <th className="px-4 py-3">Preço</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3 text-right">Ações</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-border">
-            {products.map((p: any) => (
-              <tr key={p.id}>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-2">
-                    {p.destaque && <Star className="h-3.5 w-3.5 fill-accent text-accent" />}
-                    <span className="font-medium">{p.nome}</span>
-                  </div>
-                </td>
-                <td className="px-4 py-3 text-muted-foreground">{p.codigo}</td>
-                <td className="px-4 py-3">{p.categories?.nome ?? "—"}</td>
-                <td className="px-4 py-3">{p.preco != null ? formatBRL(p.preco) : <span className="italic text-muted-foreground">consulta</span>}</td>
-                <td className="px-4 py-3">
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${p.ativo ? "bg-sage/20" : "bg-muted text-muted-foreground"}`}>
-                    {p.ativo ? "Ativo" : "Inativo"}
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-right">
-                  <div className="inline-flex gap-1">
-                    <Button asChild size="icon" variant="ghost"><Link to="/admin/produtos/$id" params={{ id: p.id }}><Edit className="h-4 w-4" /></Link></Button>
-                    <Button size="icon" variant="ghost" onClick={() => handleDuplicate(p)}><Copy className="h-4 w-4" /></Button>
-                    <Button size="icon" variant="ghost" onClick={() => handleDelete(p.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
-                  </div>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[640px]">
+            <thead className="bg-secondary/40 text-left text-xs uppercase tracking-wider text-muted-foreground">
+              <tr>
+                <th className="px-4 py-3">Nome</th>
+                <th className="px-4 py-3">Código</th>
+                <th className="px-4 py-3">Categoria</th>
+                <th className="px-4 py-3">Preço</th>
+                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3 text-right">Ações</th>
               </tr>
-            ))}
-            {products.length === 0 && (
-              <tr><td colSpan={6} className="text-center py-10 text-muted-foreground">Nenhum produto. Cadastre o primeiro!</td></tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {products.map((p: any) => (
+                <tr key={p.id}>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      {p.destaque && <Star className="h-3.5 w-3.5 fill-accent text-accent shrink-0" />}
+                      <span className="font-medium">{p.nome}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">{p.codigo}</td>
+                  <td className="px-4 py-3 whitespace-nowrap">{p.categories?.nome ?? "—"}</td>
+                  <td className="px-4 py-3 whitespace-nowrap">{p.preco != null ? formatBRL(p.preco) : <span className="italic text-muted-foreground">consulta</span>}</td>
+                  <td className="px-4 py-3">
+                    <span className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap ${p.ativo ? "bg-sage/20" : "bg-muted text-muted-foreground"}`}>
+                      {p.ativo ? "Ativo" : "Inativo"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <div className="inline-flex gap-1">
+                      <Button asChild size="icon" variant="ghost"><Link to="/admin/produtos/$id" params={{ id: p.id }}><Edit className="h-4 w-4" /></Link></Button>
+                      <Button size="icon" variant="ghost" onClick={() => handleDuplicate(p)}><Copy className="h-4 w-4" /></Button>
+                      <Button size="icon" variant="ghost" onClick={() => handleDelete(p.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {products.length === 0 && (
+                <tr><td colSpan={6} className="text-center py-10 text-muted-foreground">Nenhum produto. Cadastre o primeiro!</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
