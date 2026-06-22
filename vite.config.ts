@@ -12,4 +12,10 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Force-on nitro outside Lovable so self-deploys (Vercel/Netlify) get a real
+  // SSR build instead of a static `dist/` (which causes 404 on every route
+  // other than `/`). Inside Lovable this override is ignored and Cloudflare
+  // is used. On Vercel, Nitro auto-detects the `VERCEL` env var and uses the
+  // `vercel` preset; we pin it explicitly here for clarity.
+  nitro: { preset: "vercel" },
 });
