@@ -1,4 +1,3 @@
-import logo from "@/assets/logo.asset.json";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
