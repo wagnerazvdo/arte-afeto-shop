@@ -168,7 +168,7 @@ function ProdutoPage() {
                 </>
               )}
               <div className="mt-5 flex flex-col sm:flex-row gap-3">
-                <Button onClick={handleWhats} size="lg" className="rounded-full px-8 sm:px-7 h-12 sm:h-12 flex-1">
+                <Button onClick={handleWhats} size="lg" className="rounded-full px-8 sm:px-7 h-12 flex-1">
                   <MessageCircle className="mr-2 h-4 w-4" />
                   {product.preco != null ? "Comprar agora" : "Consultar valor"}
                 </Button>
