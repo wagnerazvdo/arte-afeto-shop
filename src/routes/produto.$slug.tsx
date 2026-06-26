@@ -1,23 +1,14 @@
-import { createFileRoute, notFound, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { Heart, Share2, MessageCircle, Hourglass, Tag } from "lucide-react";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductImage } from "@/components/ProductImage";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
 import { Button } from "@/components/ui/button";
-import {
-  fetchProductBySlug,
-  fetchRelatedProducts,
-  fetchSiteSettings,
-} from "@/lib/queries";
-import {
-  buildWhatsAppUrl,
-  formatBRL,
-  mensagemComprar,
-  mensagemConsultar,
-} from "@/lib/whatsapp";
+import { fetchProductBySlug, fetchRelatedProducts, fetchSiteSettings } from "@/lib/queries";
+import { buildWhatsAppUrl, formatBRL, mensagemComprar, mensagemConsultar } from "@/lib/whatsapp";
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { Heart, Hourglass, MessageCircle, Share2, Tag } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/produto/$slug")({
@@ -29,7 +20,9 @@ export const Route = createFileRoute("/produto/$slug")({
   head: ({ loaderData }) => {
     const p = loaderData?.product;
     if (!p) return {};
-    const cover = (p.product_images ?? []).sort((a, b) => Number(b.principal) - Number(a.principal) || a.ordem - b.ordem)[0]?.url;
+    const cover = (p.product_images ?? []).sort(
+      (a, b) => Number(b.principal) - Number(a.principal) || a.ordem - b.ordem,
+    )[0]?.url;
     const description = p.descricao_curta ?? "Peça artesanal exclusiva do Ateliê Arte e Afeto.";
     return {
       meta: [
@@ -39,7 +32,9 @@ export const Route = createFileRoute("/produto/$slug")({
         { property: "og:description", content: description },
         { property: "og:type", content: "product" },
         { property: "og:url", content: `/produto/${p.slug}` },
-        ...(cover && /^https?:\/\/|^\//.test(cover) ? [{ property: "og:image", content: cover }] : []),
+        ...(cover && /^https?:\/\/|^\//.test(cover)
+          ? [{ property: "og:image", content: cover }]
+          : []),
       ],
       links: [{ rel: "canonical", href: `/produto/${p.slug}` }],
     };
@@ -50,7 +45,9 @@ export const Route = createFileRoute("/produto/$slug")({
       <SiteHeader />
       <div className="container-wide py-24 text-center">
         <h1 className="font-display text-4xl">Peça não encontrada</h1>
-        <Link to="/colecao" className="mt-4 inline-block text-primary">Ver coleção</Link>
+        <Link to="/colecao" className="mt-4 inline-block text-primary">
+          Ver coleção
+        </Link>
       </div>
       <SiteFooter />
     </div>
@@ -72,7 +69,8 @@ function ProdutoPage() {
   const [active, setActive] = useState(0);
   const main = images[active]?.url;
 
-  const productUrl = typeof window !== "undefined" ? window.location.href : `/produto/${product.slug}`;
+  const productUrl =
+    typeof window !== "undefined" ? window.location.href : `/produto/${product.slug}`;
   const whatsapp = settings?.whatsapp ?? "";
 
   const handleWhats = () => {
@@ -80,18 +78,25 @@ function ProdutoPage() {
       toast.error("WhatsApp ainda não foi configurado.");
       return;
     }
-    const msg = product.preco != null
-      ? mensagemComprar({
-          nome: product.nome,
-          codigo: product.codigo,
-          preco: product.preco,
-          categoria: product.categories?.nome ?? null,
-        }, productUrl)
-      : mensagemConsultar({
-          nome: product.nome,
-          codigo: product.codigo,
-          categoria: product.categories?.nome ?? null,
-        }, productUrl);
+    const msg =
+      product.preco != null
+        ? mensagemComprar(
+            {
+              nome: product.nome,
+              codigo: product.codigo,
+              preco: product.preco,
+              categoria: product.categories?.nome ?? null,
+            },
+            productUrl,
+          )
+        : mensagemConsultar(
+            {
+              nome: product.nome,
+              codigo: product.codigo,
+              categoria: product.categories?.nome ?? null,
+            },
+            productUrl,
+          );
     window.open(buildWhatsAppUrl(whatsapp, msg), "_blank");
   };
 
@@ -103,7 +108,9 @@ function ProdutoPage() {
         await navigator.clipboard.writeText(productUrl);
         toast.success("Link copiado!");
       }
-    } catch { /* cancelled */ }
+    } catch {
+      /* cancelled */
+    }
   };
 
   return (
@@ -111,9 +118,25 @@ function ProdutoPage() {
       <SiteHeader />
       <article className="container-wide py-10 lg:py-14">
         <nav className="text-xs tracking-widest uppercase text-muted-foreground mb-6">
-          <Link to="/" className="hover:text-primary">Início</Link> · <Link to="/colecao" className="hover:text-primary">Coleção</Link>
+          <Link to="/" className="hover:text-primary">
+            Início
+          </Link>{" "}
+          ·{" "}
+          <Link to="/colecao" className="hover:text-primary">
+            Coleção
+          </Link>
           {product.categories && (
-            <> · <Link to="/categoria/$slug" params={{ slug: product.categories.slug }} className="hover:text-primary">{product.categories.nome}</Link></>
+            <>
+              {" "}
+              ·{" "}
+              <Link
+                to="/categoria/$slug"
+                params={{ slug: product.categories.slug }}
+                className="hover:text-primary"
+              >
+                {product.categories.nome}
+              </Link>
+            </>
           )}
         </nav>
 
@@ -129,7 +152,9 @@ function ProdutoPage() {
                     key={img.id}
                     onClick={() => setActive(i)}
                     className={`aspect-square overflow-hidden rounded-xl border-2 transition ${
-                      i === active ? "border-primary" : "border-transparent opacity-70 hover:opacity-100"
+                      i === active
+                        ? "border-primary"
+                        : "border-transparent opacity-70 hover:opacity-100"
                     }`}
                   >
                     <ProductImage src={img.url} alt="" className="h-full w-full object-cover" />
@@ -141,38 +166,61 @@ function ProdutoPage() {
 
           <div>
             {product.categories && (
-              <span className="text-xs tracking-[0.3em] uppercase text-accent">{product.categories.nome}</span>
+              <span className="text-xs tracking-[0.3em] uppercase text-accent">
+                {product.categories.nome}
+              </span>
             )}
-            <h1 className="mt-2 font-display text-4xl md:text-5xl leading-tight text-balance">{product.nome}</h1>
+            <h1 className="mt-2 font-display text-4xl md:text-5xl leading-tight text-balance">
+              {product.nome}
+            </h1>
             {product.descricao_curta && (
               <p className="mt-4 text-lg text-muted-foreground">{product.descricao_curta}</p>
             )}
 
             <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-              <span className="inline-flex items-center gap-1.5"><Tag className="h-4 w-4" /> Cód. {product.codigo}</span>
+              <span className="inline-flex items-center gap-1.5">
+                <Tag className="h-4 w-4" /> Cód. {product.codigo}
+              </span>
               {product.prazo_producao && (
-                <span className="inline-flex items-center gap-1.5"><Hourglass className="h-4 w-4" /> {product.prazo_producao}</span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Hourglass className="h-4 w-4" /> {product.prazo_producao}
+                </span>
               )}
             </div>
 
             <div className="mt-8 rounded-2xl border border-border/60 bg-card p-6">
               {product.preco != null ? (
                 <>
-                  <p className="text-xs tracking-widest uppercase text-muted-foreground">Investimento</p>
-                  <p className="mt-1 font-display text-4xl text-primary">{formatBRL(product.preco)}</p>
+                  <p className="text-xs tracking-widest uppercase text-muted-foreground">
+                    Investimento
+                  </p>
+                  <p className="mt-1 font-display text-4xl text-primary">
+                    {formatBRL(product.preco)}
+                  </p>
                 </>
               ) : (
                 <>
-                  <p className="text-xs tracking-widest uppercase text-muted-foreground">Valor sob consulta</p>
+                  <p className="text-xs tracking-widest uppercase text-muted-foreground">
+                    Valor sob consulta
+                  </p>
                   <p className="mt-1 font-display text-3xl text-foreground">A combinar</p>
                 </>
               )}
               <div className="mt-5 flex flex-col sm:flex-row gap-3">
-                <Button onClick={handleWhats} size="lg" className="rounded-full px-8 sm:px-7 h-14 sm:h-12 flex-1">
+                <Button
+                  onClick={handleWhats}
+                  size="lg"
+                  className="rounded-full px-8 sm:px-7 h-10 sm:h-10"
+                >
                   <MessageCircle className="mr-2 h-4 w-4" />
                   {product.preco != null ? "Comprar agora" : "Consultar valor"}
                 </Button>
-                <Button variant="outline" size="lg" className="rounded-full px-5 h-12 border-accent/40" onClick={handleShare}>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="rounded-full px-5 h-10 border-accent/40"
+                  onClick={handleShare}
+                >
                   <Share2 className="h-4 w-4" />
                 </Button>
               </div>
@@ -191,7 +239,8 @@ function ProdutoPage() {
           <Heart className="mx-auto h-6 w-6 fill-accent text-accent" />
           <p className="mt-3 text-xs tracking-[0.4em] uppercase text-accent">Feito com Afeto</p>
           <p className="mt-4 font-display text-2xl md:text-3xl text-balance max-w-3xl mx-auto leading-snug">
-            "Cada peça da Arte e Afeto carrega uma história, um propósito e o cuidado de quem acredita que o amor transforma tudo o que toca."
+            "Cada peça da Arte e Afeto carrega uma história, um propósito e o cuidado de quem
+            acredita que o amor transforma tudo o que toca."
           </p>
         </section>
 
