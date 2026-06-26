@@ -60,7 +60,7 @@ function ColecaoPage() {
         <span className="text-xs tracking-[0.3em] uppercase text-accent">Catálogo</span>
         <h1 className="mt-2 font-display text-5xl">Nossa coleção</h1>
         <p className="mt-3 text-muted-foreground max-w-xl">
-          Cada peça é feita à mão, em pequenas quantidades, com escolha cuidadosa de cada detalhe.
+          Cada peça é feita à mão, com escolha cuidadosa de cada detalhe.
         </p>
 
         <div className="mt-8 flex flex-col md:flex-row gap-4 items-start md:items-center">
